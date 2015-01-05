@@ -2,6 +2,7 @@
 #define __XX_ENHANCED_PERSON__
 
 #include <iostream>
+#include <string>
 
 #include "Person.h"
 
@@ -18,6 +19,7 @@ public:
 	int addressCount() const;
 	void addAddress(const char *address);
 	char** getAdresses() const;
+	char* getAddressByID(const int &id) const;
 	~EnhancedPerson();
 	void show();
 

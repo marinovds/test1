@@ -15,11 +15,15 @@ private:
 public:
 	Person(const string&, const string&, const string&);
 	virtual ~Person();
+
 	void show();
+
 	string getAddress() const;
 	string getEGN() const;
-	friend ostream& operator<<(ostream &stream, const Person &person);
+	string getName() const;
 
+	friend ostream& operator<<(ostream &stream, const Person &person);
+	
 public:
 	static bool isValidEGN(const string &egn);
 	static bool isValidName(const string &name);

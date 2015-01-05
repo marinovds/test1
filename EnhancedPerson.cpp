@@ -36,6 +36,7 @@ EnhancedPerson::EnhancedPerson(const Person &p): Person(p) {
 	addresses[1] = NULL;
 }
 
+
 EnhancedPerson::~EnhancedPerson() {
 	char **p = addresses;
 	
@@ -50,6 +51,12 @@ EnhancedPerson::~EnhancedPerson() {
 void EnhancedPerson::addAddress(const char *address) {
 	if (!isValidAddress(address)) {
 		throw PersonException("Invalid address");
+	}
+
+	for(int i=0; i<addressCount(); ++i) {
+		if(strcmp(getAddressByID(i), address) == 0 ) {
+			throw PersonException("Address already exists");
+		}
 	}
 
 	int length = strlen(address) + 1;
@@ -80,21 +87,40 @@ int EnhancedPerson::addressCount() const {
 }
 
 ostream& operator<<(ostream &stream, const EnhancedPerson &ePerson) {
-	char **i = ePerson.addresses;
+	stream << "Name: " << ePerson.getName() << endl;
+	stream << "EGN: " << ePerson.getEGN() << endl;
+	stream << "Main address: " << ePerson.getAddress() << endl;
+	stream << "All addresses: " << endl;
+	for(int i=0; i<ePerson.addressCount(); ++i) {
 
-	while (*i != NULL) {
-		stream << *i << endl;
-		i++;
+		stream << ePerson.getAddressByID(i) << endl;
+
 	}
-
 	return stream;
 }
 
 void EnhancedPerson::show() {
-	EnhancedPerson::Person::show();
-	cout << "All Adresses:" << *this << endl;
+	cout  << *this << endl;
 }
 
 char** EnhancedPerson::getAdresses() const {
 	return addresses;
+}
+
+char* EnhancedPerson::getAddressByID(const int &id) const {
+	if(id > addressCount()){
+		throw PersonException("Out of Bounds");
+	}
+	
+	char** currP = addresses;	
+	int count = 0;
+
+	while(*currP != NULL) {
+		if(count == id) {
+			return *currP;
+		}
+		currP++;
+		count++;
+	}
+	throw PersonException();
 }

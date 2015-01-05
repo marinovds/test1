@@ -59,3 +59,7 @@ string Person::getAddress() const {
 string Person::getEGN() const {
 	return EGN;
 }
+
+string Person::getName() const{
+	return name;
+}

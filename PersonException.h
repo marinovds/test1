@@ -16,11 +16,11 @@ public:
 	};
 
 	~PersonException() throw() {
-	}
+	};
 
 	const char *what() const throw() {
 		return reason.c_str();
-	}
+	};
 };
 
 #endif

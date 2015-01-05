@@ -22,12 +22,12 @@ using namespace std;
 vector<EnhancedPerson> getByAddress(const string &address, const vector<EnhancedPerson> &people) {
 	vector<EnhancedPerson> retval;
 	for(long i=0; i<(long) people.size(); ++i) {
-		char** p = people.at(i).getAdresses();
-		while(*p != NULL) {
-			if(address.compare(*p)) {
+		int count = people.at(i).addressCount();
+		for(int j=0; j < count; ++j) {
+			string test = people.at(i).getAddressByID(j);
+			if(address.compare(test) == 0) {
 				retval.push_back(people.at(i));
 			}
-			p++;
 		}
 	}
 	if(retval.empty()) {
@@ -37,30 +37,27 @@ vector<EnhancedPerson> getByAddress(const string &address, const vector<Enhanced
 }
 
 void showByAddress(const string &address, const vector<EnhancedPerson> &people) {
-	for(long i=0; i<(long) people.size(); ++i) {
-		char** p = people.at(i).getAdresses();
-		while(*p != NULL) {
-			if(address.compare(*p)) {
-				cout<< people.at(i);
-			}
-		}
+	vector<EnhancedPerson> retval = getByAddress(address, people);
+	for(long i=0; i<(long) retval.size(); ++i) {
+		cout << retval.at(i);
 	}
 }
 
 void showByEGN(const string &egn, const vector<EnhancedPerson> &people) {
-	for(long i=0; i<(long) people.size(); ++i) { 
-		if(egn.compare(people.at(i).getEGN()) == 0) {
-			cout<< people.at(i);
-		}
-	}
+	cout<< getByEGN(egn, people);
 }
 
 void saveInFile(const string &fileName, vector<EnhancedPerson> &people) {
 	ofstream file;
-	file.open(fileName.c_str());
+	file.open(fileName.c_str(), ios::out | ios::app);
+	if(file.is_open()) {
+		for(int i=0; i<(int) people.size(); ++i) {
+			file << people.at(i);
 
-	for(int i=0; i<(int) people.size(); ++i) {
-		file << people.at(i);
+		}
+	}
+	else{
+		throw PersonException("Could not open file");
 	}
 
 	file.close();
